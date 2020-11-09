@@ -1,4 +1,6 @@
-QT += 3dcore 3drender 3dinput 3dquick 3dlogic qml quick 3dquickextras
+QT       += core gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 
@@ -7,15 +9,16 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp
+    main.cpp \
+    mainwindow.cpp \
+    scenerendererwidget.cpp
 
-RESOURCES += qml.qrc
+HEADERS += \
+    mainwindow.h \
+    scenerendererwidget.h
 
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
-
-# Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
+FORMS += \
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

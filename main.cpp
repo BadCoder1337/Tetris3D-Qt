@@ -1,12 +1,11 @@
-#include <Qt3DQuickExtras/qt3dquickwindow.h>
-#include <QGuiApplication>
+#include "mainwindow.h"
 
-int main(int argc, char* argv[])
+#include <QApplication>
+
+int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
-    Qt3DExtras::Quick::Qt3DQuickWindow view;
-    view.setSource(QUrl("qrc:/main.qml"));
-    view.show();
-
-    return app.exec();
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
 }
