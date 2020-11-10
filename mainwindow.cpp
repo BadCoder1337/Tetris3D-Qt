@@ -1,16 +1,19 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "scenerendererwidget.h"
+#include "./components/scenewidget.h"
+
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    SceneRendererWidget* sceneRendererWidget = new SceneRendererWidget(this);
+    SceneWidget* sceneWidget = new SceneWidget(this);
+//    sceneWidget->setUpdateBehavior(QOpenGLWidget::NoPartialUpdate);
 
     ui->setupUi(this);
-    ui->centralwidget->layout()->addWidget(sceneRendererWidget);
+    ui->centralwidget->layout()->addWidget(sceneWidget);
 }
 
 MainWindow::~MainWindow()
