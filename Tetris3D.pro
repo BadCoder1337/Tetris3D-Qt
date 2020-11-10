@@ -9,6 +9,10 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    components/camera3d.cpp \
+    components/scenerenderer.cpp \
+    components/scenewidget.cpp \
+    components/transform3d.cpp \
     main.cpp \
     mainwindow.cpp \
     qu3e/broadphase/q3BroadPhase.cpp \
@@ -25,10 +29,13 @@ SOURCES += \
     qu3e/math/q3Mat3.cpp \
     qu3e/math/q3Quaternion.cpp \
     qu3e/math/q3Vec3.cpp \
-    qu3e/scene/q3Scene.cpp \
-    scenerendererwidget.cpp
+    qu3e/scene/q3Scene.cpp
 
 HEADERS += \
+    components/camera3d.h \
+    components/scenerenderer.h \
+    components/scenewidget.h \
+    components/transform3d.h \
     mainwindow.h \
     qu3e/broadphase/q3BroadPhase.h \
     qu3e/broadphase/q3DynamicAABBTree.h \
@@ -57,11 +64,12 @@ HEADERS += \
     qu3e/math/q3Vec3.h \
     qu3e/math/q3Vec3.inl \
     qu3e/q3.h \
-    qu3e/scene/q3Scene.h \
-    scenerendererwidget.h
+    qu3e/scene/q3Scene.h
 
 FORMS += \
     mainwindow.ui
+
+LIBS += -lOpenGL32
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
