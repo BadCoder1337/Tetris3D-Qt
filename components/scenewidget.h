@@ -71,17 +71,17 @@ private:
 
     QOpenGLDebugLogger *logger;
     QOpenGLBuffer m_vertex;
-      QOpenGLVertexArrayObject m_object;
-      QOpenGLShaderProgram *m_program;
+    QOpenGLVertexArrayObject m_object;
+    QOpenGLShaderProgram *m_program;
 
       // Shader Information
-      int u_modelToWorld;
-      int u_worldToView;
-      QMatrix4x4 m_projection;
-      Transform3D m_transform;
+    int u_modelToWorld;
+    int u_worldToView;
+    QMatrix4x4 m_projection;
+    Transform3D m_transform;
 
-      // Fix for Windows
-      QRegion m_cachedRegion;
+    // Fix for Windows
+    QRegion m_cachedRegion;
 };
 
 #endif // SCENERENDERERWIDGET_H

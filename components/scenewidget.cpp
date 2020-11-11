@@ -4,56 +4,9 @@
 #include <QSurfaceFormat>
 #include <QOpenGLDebugLogger>
 
-// Front Verticies
-#define VERTEX_FTR Vertex( QVector3D( 0.5f,  0.5f,  0.5f), QVector3D( 1.0f, 0.0f, 0.0f ) )
-#define VERTEX_FTL Vertex( QVector3D(-0.5f,  0.5f,  0.5f), QVector3D( 0.0f, 1.0f, 0.0f ) )
-#define VERTEX_FBL Vertex( QVector3D(-0.5f, -0.5f,  0.5f), QVector3D( 0.0f, 0.0f, 1.0f ) )
-#define VERTEX_FBR Vertex( QVector3D( 0.5f, -0.5f,  0.5f), QVector3D( 0.0f, 0.0f, 0.0f ) )
-
-// Back Verticies
-#define VERTEX_BTR Vertex( QVector3D( 0.5f,  0.5f, -0.5f), QVector3D( 1.0f, 1.0f, 0.0f ) )
-#define VERTEX_BTL Vertex( QVector3D(-0.5f,  0.5f, -0.5f), QVector3D( 0.0f, 1.0f, 1.0f ) )
-#define VERTEX_BBL Vertex( QVector3D(-0.5f, -0.5f, -0.5f), QVector3D( 1.0f, 0.0f, 1.0f ) )
-#define VERTEX_BBR Vertex( QVector3D( 0.5f, -0.5f, -0.5f), QVector3D( 1.0f, 1.0f, 1.0f ) )
-
-// Create a colored cube
-static const Vertex sg_vertexes[] = {
-  // Face 1 (Front)
-    VERTEX_FTR, VERTEX_FTL, VERTEX_FBL,
-    VERTEX_FBL, VERTEX_FBR, VERTEX_FTR,
-  // Face 2 (Back)
-    VERTEX_BBR, VERTEX_BTL, VERTEX_BTR,
-    VERTEX_BTL, VERTEX_BBR, VERTEX_BBL,
-  // Face 3 (Top)
-    VERTEX_FTR, VERTEX_BTR, VERTEX_BTL,
-    VERTEX_BTL, VERTEX_FTL, VERTEX_FTR,
-  // Face 4 (Bottom)
-    VERTEX_FBR, VERTEX_FBL, VERTEX_BBL,
-    VERTEX_BBL, VERTEX_BBR, VERTEX_FBR,
-  // Face 5 (Left)
-    VERTEX_FBL, VERTEX_FTL, VERTEX_BTL,
-    VERTEX_FBL, VERTEX_BTL, VERTEX_BBL,
-  // Face 6 (Right)
-    VERTEX_FTR, VERTEX_FBR, VERTEX_BBR,
-    VERTEX_BBR, VERTEX_BTR, VERTEX_FTR
-};
-
-#undef VERTEX_BBR
-#undef VERTEX_BBL
-#undef VERTEX_BTL
-#undef VERTEX_BTR
-
-#undef VERTEX_FBR
-#undef VERTEX_FBL
-#undef VERTEX_FTL
-#undef VERTEX_FTR
-
 SceneWidget::SceneWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
     QSurfaceFormat format;
-//    format.setRenderableType(QSurfaceFormat::OpenGL);
-//    format.setProfile(QSurfaceFormat::CoreProfile);
-//    format.setVersion(3, 3);
     format.setOption(QSurfaceFormat::DebugContext);
     setFormat(format);
 
@@ -65,35 +18,16 @@ SceneWidget::SceneWidget(QWidget *parent) : QOpenGLWidget(parent)
 
     setMinimumSize(200, 200);
     setMaximumSize(2000, 2000);
-//    setAutoFillBackground(false);
 
 }
 
 SceneWidget::~SceneWidget() {
+    m_vertex.release();
     m_object.destroy();
     m_vertex.destroy();
     delete m_program;
     delete timer;
 }
-
-GLfloat vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
-};
-
-const GLchar* vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 position;\n"
-    "void main()\n"
-    "{\n"
-    "gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
-    "}\0";
-const GLchar* fragmentShaderSource = "#version 330 core\n"
-    "out vec4 color;\n"
-    "void main()\n"
-    "{\n"
-    "color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n\0";
 
 void SceneWidget::initializeGL() {
     initializeOpenGLFunctions();
@@ -121,8 +55,7 @@ void SceneWidget::initializeGL() {
         // Create Buffer (Do not release until VAO is created)
         m_vertex.create();
         m_vertex.bind();
-        m_vertex.setUsagePattern(QOpenGLBuffer::StaticDraw);
-        m_vertex.allocate(sg_vertexes, sizeof(sg_vertexes));
+        m_vertex.setUsagePattern(QOpenGLBuffer::StreamDraw);
 
         // Create Vertex Array Object
         m_object.create();
@@ -134,7 +67,7 @@ void SceneWidget::initializeGL() {
 
         // Release (unbind) all
         m_object.release();
-        m_vertex.release();
+//        m_vertex.release();
         m_program->release();
       }
 
@@ -146,7 +79,7 @@ void SceneWidget::initializeGL() {
 
 void SceneWidget::resizeGL(int width, int height) {
     m_projection.setToIdentity();
-      m_projection.perspective(45.0f, width / float(height), 0.0f, 1000.0f);
+    m_projection.perspective(45.0f, width / float(height), 0.0f, 1000.0f);
     update();
 };
 
@@ -156,23 +89,22 @@ void SceneWidget::paintGL() {
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-      // Render using our shader
-      m_program->bind();
-      m_program->setUniformValue(u_worldToView, m_projection);
-      {
-        m_object.bind();
-        m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
-        glDrawArrays(GL_TRIANGLES, 0, sizeof(sg_vertexes) / sizeof(sg_vertexes[0]));
-        m_object.release();
-      }
-      m_program->release();
+//    Triangle( 0.0f,  0.0f,  0.5f,
+//              -1.0f,  1.0f,  0.5f,
+//              -1.0f, -0.5f,  0.5f);
 
+//    Triangle( 0.5f,  0.5f,  0.5f,
+//              -0.5f,  0.5f,  0.5f,
+//              -0.5f, -0.5f,  0.5f);
 
+//    Triangle( 0.5f,  0.5f,  0.5f,
+//              -0.5f,  0.5f,  0.5f,
+//              -0.5f, -0.5f,  0.5f);
 
-//    qDebug() << (scene == nullptr ? "scene is nullptr" : "scene ready");
-//    if (scene) {
-//        scene->Render(this);
-//    }
+    qDebug() << (scene == nullptr ? "scene is nullptr" : "scene ready");
+    if (scene) {
+        scene->Render(this);
+    }
     const QList<QOpenGLDebugMessage> messages = logger->loggedMessages();
         for (const QOpenGLDebugMessage &message : messages)
             qDebug() << "paintGL" << message;
@@ -181,18 +113,18 @@ void SceneWidget::paintGL() {
 };
 
 void SceneWidget::step() {
-//    qDebug() << "step";
-//    if (scene) {
-//        scene->Step();
-//        update();
-//    }
+    qDebug() << "step";
+    if (scene) {
+        scene->Step();
+        update();
+    }
 }
 
 void SceneWidget::SetPenColor( f32 r, f32 g, f32 b, f32 a = 1.0f )
 {
     Q3_UNUSED( a );
 
-    glColor3f( (float)r, (float)g, (float)b );
+//    glColor3f( (float)r, (float)g, (float)b );
 }
 
 void SceneWidget::SetPenPosition( f32 x, f32 y, f32 z )
@@ -202,17 +134,17 @@ void SceneWidget::SetPenPosition( f32 x, f32 y, f32 z )
 
 void SceneWidget::SetScale( f32 sx, f32 sy, f32 sz )
 {
-    glPointSize( (float)sx );
+//    glPointSize( (float)sx );
     sx_ = sx, sy_ = sy, sz_ = sz;
 }
 
 void SceneWidget::Line( f32 x, f32 y, f32 z )
 {
-    glBegin( GL_LINES );
-    glVertex3f( (float)x_, (float)y_, (float)z_ );
-    glVertex3f( (float)x, (float)y, (float)z );
+//    glBegin( GL_LINES );
+//    glVertex3f( (float)x_, (float)y_, (float)z_ );
+//    glVertex3f( (float)x, (float)y, (float)z );
     SetPenPosition( x, y, z );
-    glEnd( );
+//    glEnd( );
 }
 
 void SceneWidget::Triangle(
@@ -221,15 +153,25 @@ void SceneWidget::Triangle(
     f32 x3, f32 y3, f32 z3
     )
 {
-    glEnable( GL_LIGHTING );
-    glBegin(GL_TRIANGLES);
-        glNormal3f( (float)nx_, (float)ny_, (float)nz_ );
-        glColor4f( 0.2f, 0.4f, 0.7f, 0.5f );
-        glVertex3f( (float)x1, (float)y1, (float)z1 );
-        glVertex3f( (float)x2, (float)y2, (float)z2 );
-        glVertex3f( (float)x3, (float)y3, (float)z3 );
-    glEnd();
-    glDisable( GL_LIGHTING );
+//    f32 values[] = { x1,  y1,  z1, x2,  y2,  z2, x3,  y3,  z3 };
+//    QMatrix3x3 triangle(values);
+    Vertex sg_vertexes[] = {
+      // Face 1 (Front)
+        Vertex( QVector3D( x1,  y1,  z1).normalized(), QVector3D( 1.0f, 0.0f, 0.0f ) ),
+        Vertex( QVector3D( x2,  y2,  z2).normalized(), QVector3D( 0.0f, 1.0f, 0.0f ) ),
+        Vertex( QVector3D( x3,  y3,  z3).normalized(), QVector3D( 0.0f, 0.0f, 1.0f ) )
+    };
+
+    m_vertex.allocate(sg_vertexes, sizeof(sg_vertexes));
+
+      // Render using our shader
+    m_program->bind();
+    m_program->setUniformValue(u_worldToView, m_projection);
+      m_object.bind();
+      m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
+      glDrawArrays(GL_TRIANGLES, 0, sizeof(sg_vertexes) / sizeof(sg_vertexes[0]));
+      m_object.release();
+    m_program->release();
 }
 
 void SceneWidget::SetTriNormal( f32 x, f32 y, f32 z )
@@ -241,7 +183,7 @@ void SceneWidget::SetTriNormal( f32 x, f32 y, f32 z )
 
 void SceneWidget::Point( )
 {
-    glBegin( GL_POINTS );
-    glVertex3f( (float)x_, (float)y_, (float)z_ );
-    glEnd( );
+//    glBegin( GL_POINTS );
+//    glVertex3f( (float)x_, (float)y_, (float)z_ );
+//    glEnd( );
 };
