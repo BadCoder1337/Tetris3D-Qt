@@ -10,7 +10,6 @@ CONFIG += c++11
 
 SOURCES += \
     components/camera3d.cpp \
-    components/scenerenderer.cpp \
     components/scenewidget.cpp \
     components/transform3d.cpp \
     main.cpp \
@@ -33,9 +32,9 @@ SOURCES += \
 
 HEADERS += \
     components/camera3d.h \
-    components/scenerenderer.h \
     components/scenewidget.h \
     components/transform3d.h \
+    components/vertex.h \
     mainwindow.h \
     qu3e/broadphase/q3BroadPhase.h \
     qu3e/broadphase/q3DynamicAABBTree.h \
@@ -69,6 +68,9 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
+RESOURCES += \
+    resources.qrc
+
 LIBS += -lOpenGL32
 
 # Default rules for deployment.
@@ -77,4 +79,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    components/shaders/debug.frag \
+    components/shaders/debug.vert \
+    components/shaders/simple.frag \
+    components/shaders/simple.vert \
     qu3e/CMakeLists.txt

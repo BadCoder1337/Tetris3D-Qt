@@ -6,13 +6,8 @@
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
     QApplication a(argc, argv);
-
-//    QSurfaceFormat format;
-//    format.setRenderableType(QSurfaceFormat::OpenGL);
-//    format.setProfile(QSurfaceFormat::CoreProfile);
-//    format.setVersion(3, 3);
-
     MainWindow window;
     window.show();
     return a.exec();
