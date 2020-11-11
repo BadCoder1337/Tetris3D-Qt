@@ -34,7 +34,9 @@ void SceneWidget::initializeGL() {
     logger = new QOpenGLDebugLogger(this);
     logger->initialize();
 
-    m_transform.translate(0.0f, 0.0f, -50.0f);
+    m_transform.setTranslation(initialTransformation);
+    m_projection.setToIdentity();
+    m_projection.perspective(initialProjection.x(), width() / float(height()), initialProjection.y(), initialProjection.z());
 
     glEnable(GL_CULL_FACE);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -92,7 +94,7 @@ void SceneWidget::initializeGL() {
 
 void SceneWidget::resizeGL(int width, int height) {
     m_projection.setToIdentity();
-    m_projection.perspective(60.0f, width / float(height), 0.1f, 1000.0f);
+    m_projection.perspective(initialProjection.x(), width / float(height), initialProjection.y(), initialProjection.z());
     update();
 };
 
@@ -101,11 +103,18 @@ void SceneWidget::paintGL() {
     logger->initialize();
 
     glClear(GL_COLOR_BUFFER_BIT);
+    m_program->bind();
+    m_program->setUniformValue(u_worldToCamera, m_camera.toMatrix());
+    m_program->setUniformValue(u_cameraToView, m_projection);
 
-    qDebug() << (scene == nullptr ? "scene is nullptr" : "scene ready");
     if (scene) {
         scene->Render(this);
+    } else {
+        qDebug() << "scene is nullptr";
     }
+
+    m_program->release();
+
     const QList<QOpenGLDebugMessage> messages = logger->loggedMessages();
         for (const QOpenGLDebugMessage &message : messages)
             if (message.severity() != QOpenGLDebugMessage::NotificationSeverity) qDebug() << "paintGL" << message;
@@ -114,8 +123,8 @@ void SceneWidget::paintGL() {
 };
 
 void SceneWidget::step() {
-    qDebug() << "step";
     if (scene) {
+        // qDebug() << "step";
         scene->Step();
         update();
     }
@@ -166,16 +175,12 @@ void SceneWidget::Triangle(
     m_vertex.allocate(sg_vertexes, sizeof(sg_vertexes));
 
       // Render using our shader
-    m_program->bind();
-    m_program->setUniformValue(u_worldToCamera, m_camera.toMatrix());
-    m_program->setUniformValue(u_cameraToView, m_projection);
     {
       m_object.bind();
       m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
       glDrawArrays(GL_TRIANGLES, 0, sizeof(sg_vertexes) / sizeof(sg_vertexes[0]));
       m_object.release();
     }
-    m_program->release();
 }
 
 void SceneWidget::SetTriNormal( f32 x, f32 y, f32 z )

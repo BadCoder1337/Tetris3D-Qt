@@ -33,8 +33,6 @@ public:
     q3Scene *scene = nullptr;
     QTimer *timer;
 
-    QMatrix4x4 projection;
-    QOpenGLShaderProgram shader;
     QVector3D penColor;
     
     void SetPenColor( f32 r, f32 g, f32 b, f32 a ) override final;
@@ -48,6 +46,14 @@ public:
             ) override final;
     void SetTriNormal( f32 x, f32 y, f32 z ) override final;
     void Point( ) override final;
+
+    QMatrix4x4 m_projection;
+    Camera3D m_camera;
+    Transform3D m_transform;
+
+    QVector3D initialProjection = QVector3D(60.0f, 0.1f, 1000.0f );
+    QVector3D initialTransformation = QVector3D( 0.0f, 0.0f, -50.0f );
+    //QVector3D initialCamera = { 60.0f, 0.1f, 1000.0f };
 
 public slots:
     void step();
@@ -73,12 +79,6 @@ private:
     int u_modelToWorld;
     int u_worldToCamera;
     int u_cameraToView;
-    QMatrix4x4 m_projection;
-    Camera3D m_camera;
-    Transform3D m_transform;
-
-    // Fix for Windows
-    QRegion m_cachedRegion;
 };
 
 #endif // SCENERENDERERWIDGET_H
