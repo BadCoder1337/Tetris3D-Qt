@@ -3,6 +3,7 @@
 
 #include "./qu3e/q3.h"
 #include "transform3d.h"
+#include "camera3d.h"
 
 #include <QOpenGLWidget>
 #include <QOpenGLExtraFunctions>
@@ -12,12 +13,6 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLDebugLogger>
-
-struct Camera
-{
-    QVector3D position = QVector3D(0.0f, 5.0f, 20.0f);
-    QVector3D target = QVector3D(0.0f, 0.0f, 0.0f);
-};
 
 struct Light
 {
@@ -34,13 +29,13 @@ public:
     SceneWidget(QWidget *parent);
     ~SceneWidget();
 
-    Camera camera;
     Light light;
     q3Scene *scene = nullptr;
     QTimer *timer;
 
     QMatrix4x4 projection;
     QOpenGLShaderProgram shader;
+    QVector3D penColor;
     
     void SetPenColor( f32 r, f32 g, f32 b, f32 a ) override final;
     void SetPenPosition( f32 x, f32 y, f32 z ) override final;
@@ -76,8 +71,10 @@ private:
 
       // Shader Information
     int u_modelToWorld;
-    int u_worldToView;
+    int u_worldToCamera;
+    int u_cameraToView;
     QMatrix4x4 m_projection;
+    Camera3D m_camera;
     Transform3D m_transform;
 
     // Fix for Windows

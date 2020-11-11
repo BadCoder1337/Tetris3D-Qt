@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     components/camera3d.cpp \
+    components/polycube.cpp \
     components/scenewidget.cpp \
     components/transform3d.cpp \
     main.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
 
 HEADERS += \
     components/camera3d.h \
+    components/polycube.h \
     components/scenewidget.h \
     components/transform3d.h \
     components/vertex.h \
