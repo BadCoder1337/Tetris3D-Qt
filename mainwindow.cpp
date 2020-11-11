@@ -28,9 +28,9 @@ MainWindow::MainWindow(QWidget *parent)
     bodyDef.position.Set( 0.0f, 5.0f, 0.0f );
     body = scene->CreateBody( bodyDef );
 
-    tx.rotation.Set(q3Vec3(1.0f, 1.0f, 0.0f), -3.14f);
+    // tx.rotation.Set(q3Vec3(1.0f, 1.0f, 0.0f), -3.14f);
 
-    for ( int i = 0; i < 10; ++i )
+    for ( int i = 0; i < 1; ++i )
     {
         tx.position.Set( q3RandomFloat( 1.0f, 10.0f ), q3RandomFloat( 1.0f, 10.0f ), q3RandomFloat( 1.0f, 10.0f ) );
         boxDef.Set( tx, q3Vec3( 3.0f, 3.0f, 3.0f ) );

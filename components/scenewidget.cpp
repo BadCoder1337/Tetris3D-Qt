@@ -34,10 +34,22 @@ void SceneWidget::initializeGL() {
     logger = new QOpenGLDebugLogger(this);
     logger->initialize();
 
-    m_transform.translate(0.0f, 0.0f, -5.0f);
+    m_transform.translate(0.0f, 0.0f, -50.0f);
 
     glEnable(GL_CULL_FACE);
-      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glEnable( GL_CULL_FACE );
+    glEnable( GL_DEPTH_TEST );
+    glEnable( GL_BLEND );
+    glEnable( GL_MULTISAMPLE );
+    glEnable( GL_SCISSOR_TEST );
+    glEnable( GL_LIGHTING );
+    glCullFace( GL_BACK );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    glShadeModel( GL_SMOOTH );
+    glViewport(0, 0, width(), height());
+
+    glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_TRANSFORM_BIT);
 
       // Application-specific initialization
       {
@@ -50,7 +62,8 @@ void SceneWidget::initializeGL() {
 
         // Cache Uniform Locations
         u_modelToWorld = m_program->uniformLocation("modelToWorld");
-        u_worldToView = m_program->uniformLocation("worldToView");
+        u_worldToCamera = m_program->uniformLocation("worldToCamera");
+        u_cameraToView = m_program->uniformLocation("cameraToView");
 
         // Create Buffer (Do not release until VAO is created)
         m_vertex.create();
@@ -79,7 +92,7 @@ void SceneWidget::initializeGL() {
 
 void SceneWidget::resizeGL(int width, int height) {
     m_projection.setToIdentity();
-    m_projection.perspective(45.0f, width / float(height), 0.0f, 1000.0f);
+    m_projection.perspective(60.0f, width / float(height), 0.1f, 1000.0f);
     update();
 };
 
@@ -89,25 +102,13 @@ void SceneWidget::paintGL() {
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-//    Triangle( 0.0f,  0.0f,  0.5f,
-//              -1.0f,  1.0f,  0.5f,
-//              -1.0f, -0.5f,  0.5f);
-
-//    Triangle( 0.5f,  0.5f,  0.5f,
-//              -0.5f,  0.5f,  0.5f,
-//              -0.5f, -0.5f,  0.5f);
-
-//    Triangle( 0.5f,  0.5f,  0.5f,
-//              -0.5f,  0.5f,  0.5f,
-//              -0.5f, -0.5f,  0.5f);
-
     qDebug() << (scene == nullptr ? "scene is nullptr" : "scene ready");
     if (scene) {
         scene->Render(this);
     }
     const QList<QOpenGLDebugMessage> messages = logger->loggedMessages();
         for (const QOpenGLDebugMessage &message : messages)
-            qDebug() << "paintGL" << message;
+            if (message.severity() != QOpenGLDebugMessage::NotificationSeverity) qDebug() << "paintGL" << message;
     delete logger;
 
 };
@@ -157,20 +158,23 @@ void SceneWidget::Triangle(
 //    QMatrix3x3 triangle(values);
     Vertex sg_vertexes[] = {
       // Face 1 (Front)
-        Vertex( QVector3D( x1,  y1,  z1).normalized(), QVector3D( 1.0f, 0.0f, 0.0f ) ),
-        Vertex( QVector3D( x2,  y2,  z2).normalized(), QVector3D( 0.0f, 1.0f, 0.0f ) ),
-        Vertex( QVector3D( x3,  y3,  z3).normalized(), QVector3D( 0.0f, 0.0f, 1.0f ) )
+        Vertex( QVector3D( x1,  y1,  z1), QVector3D( 1.0f, 0.0f, 0.0f ) ),
+        Vertex( QVector3D( x2,  y2,  z2), QVector3D( 0.0f, 1.0f, 0.0f ) ),
+        Vertex( QVector3D( x3,  y3,  z3), QVector3D( 0.0f, 0.0f, 1.0f ) )
     };
 
     m_vertex.allocate(sg_vertexes, sizeof(sg_vertexes));
 
       // Render using our shader
     m_program->bind();
-    m_program->setUniformValue(u_worldToView, m_projection);
+    m_program->setUniformValue(u_worldToCamera, m_camera.toMatrix());
+    m_program->setUniformValue(u_cameraToView, m_projection);
+    {
       m_object.bind();
       m_program->setUniformValue(u_modelToWorld, m_transform.toMatrix());
       glDrawArrays(GL_TRIANGLES, 0, sizeof(sg_vertexes) / sizeof(sg_vertexes[0]));
       m_object.release();
+    }
     m_program->release();
 }
 
