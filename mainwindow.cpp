@@ -30,32 +30,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     tx.rotation.Set(q3Vec3(1.0f, 1.0f, 0.0f), -3.14f);
 
-    for ( int i = 0; i < 1; ++i )
+    for ( int i = 0; i < 10; ++i )
     {
         tx.position.Set( q3RandomFloat( 1.0f, 10.0f ), q3RandomFloat( 1.0f, 10.0f ), q3RandomFloat( 1.0f, 10.0f ) );
         boxDef.Set( tx, q3Vec3( 3.0f, 3.0f, 3.0f ) );
         body->AddBox( boxDef );
     }
 
-    ui->sceneWidget->scene = scene;
-
-    ui->dSBTx->setValue(ui->sceneWidget->initialTransformation.x());
-    ui->dSBTy->setValue(ui->sceneWidget->initialTransformation.y());
-    ui->dSBTz->setValue(ui->sceneWidget->initialTransformation.z());
-
-    ui->dSBFOV->setValue(ui->sceneWidget->initialProjection.x());
-    ui->dSBNearPlane->setValue(ui->sceneWidget->initialProjection.y());
-    ui->dSBFarPlane->setValue(ui->sceneWidget->initialProjection.z());
-
-    connect(ui->dSBFOV, SIGNAL(valueChanged(double)), this, SLOT(setParams()));
-    connect(ui->dSBCx, SIGNAL(valueChanged(double)), this, SLOT(setParams()));
-    connect(ui->dSBCy, SIGNAL(valueChanged(double)), this, SLOT(setParams()));
-    connect(ui->dSBCz, SIGNAL(valueChanged(double)), this, SLOT(setParams()));
-    connect(ui->dSBTx, SIGNAL(valueChanged(double)), this, SLOT(setParams()));
-    connect(ui->dSBTy, SIGNAL(valueChanged(double)), this, SLOT(setParams()));
-    connect(ui->dSBTz, SIGNAL(valueChanged(double)), this, SLOT(setParams()));
-    connect(ui->dSBFarPlane, SIGNAL(valueChanged(double)), this, SLOT(setParams()));
-    connect(ui->dSBNearPlane, SIGNAL(valueChanged(double)), this, SLOT(setParams()));
+//    ui->sceneWidget->scene = scene;
+    ui->quickWidget->setSource(QUrl("qrc:/qml/main.qml"));
 
 }
 
@@ -65,10 +48,10 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::setParams() {
-    qDebug() << "SET PARAMS";
-    ui->sceneWidget->m_transform.setTranslation(ui->dSBTx->value(), ui->dSBTy->value(), ui->dSBTz->value());
-    ui->sceneWidget->m_projection.setToIdentity();
-    ui->sceneWidget->m_projection.perspective(ui->dSBFOV->value(), ui->sceneWidget->width() / (float)ui->sceneWidget->height(), ui->dSBNearPlane->value(), ui->dSBFarPlane->value());
-    ui->sceneWidget->update();
+//    qDebug() << "SET PARAMS";
+//    ui->sceneWidget->m_transform.setTranslation(ui->dSBTx->value(), ui->dSBTy->value(), ui->dSBTz->value());
+//    ui->sceneWidget->m_projection.setToIdentity();
+//    ui->sceneWidget->m_projection.perspective(ui->dSBFOV->value(), ui->sceneWidget->width() / (float)ui->sceneWidget->height(), ui->dSBNearPlane->value(), ui->dSBFarPlane->value());
+//    ui->sceneWidget->update();
 }
 

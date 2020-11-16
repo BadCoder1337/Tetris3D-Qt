@@ -1,12 +1,6 @@
-QT       += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui qml quick 3dinput widgets 3dextras quickwidgets
 
 CONFIG += c++11
-
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
     components/camera3d.cpp \
@@ -81,8 +75,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    components/shaders/debug.frag \
-    components/shaders/debug.vert \
-    components/shaders/simple.frag \
-    components/shaders/simple.vert \
+    qml/AnimatedEntity.qml \
+    qml/main.qml \
     qu3e/CMakeLists.txt
