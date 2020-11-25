@@ -5,6 +5,9 @@
 #include "./qu3e/q3.h"
 
 #include <QTimer>
+#include <QQuickItem>
+#include <QQmlEngine>
+#include <QQuickPaintedItem>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,10 +15,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    q3Scene *scene = new q3Scene(1.0f / 60.0f);
+    scenePhys = new q3Scene(1.0f / 60.0f);
 
     q3BodyDef bodyDef;
-    q3Body* body = scene->CreateBody( bodyDef );
+    q3Body* body = scenePhys->CreateBody( bodyDef );
     q3BoxDef boxDef;
     boxDef.SetRestitution( 0 );
     q3Transform tx;
@@ -26,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     bodyDef.bodyType = eDynamicBody;
     bodyDef.position.Set( 0.0f, 5.0f, 0.0f );
-    body = scene->CreateBody( bodyDef );
+    body = scenePhys->CreateBody( bodyDef );
 
     tx.rotation.Set(q3Vec3(1.0f, 1.0f, 0.0f), -3.14f);
 
@@ -37,21 +40,20 @@ MainWindow::MainWindow(QWidget *parent)
         body->AddBox( boxDef );
     }
 
-//    ui->sceneWidget->scene = scene;
     ui->quickWidget->setSource(QUrl("qrc:/qml/main.qml"));
 
+    scene3D = ui->quickWidget->rootObject()->findChild<QQuickItem*>("scene")->childItems().first();
 }
 
 MainWindow::~MainWindow()
 {
+    delete scenePhys;
     delete ui;
 }
 
-void MainWindow::setParams() {
-//    qDebug() << "SET PARAMS";
-//    ui->sceneWidget->m_transform.setTranslation(ui->dSBTx->value(), ui->dSBTy->value(), ui->dSBTz->value());
-//    ui->sceneWidget->m_projection.setToIdentity();
-//    ui->sceneWidget->m_projection.perspective(ui->dSBFOV->value(), ui->sceneWidget->width() / (float)ui->sceneWidget->height(), ui->dSBNearPlane->value(), ui->dSBFarPlane->value());
-//    ui->sceneWidget->update();
+void MainWindow::on_doubleSpinBox_10_valueChanged(double arg1)
+{
+    qDebug() << scene3D->property("color");
+    scene3D->setProperty("color", "green");
+    qDebug() << scene3D->childItems();
 }
-

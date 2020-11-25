@@ -75,6 +75,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    assets/skybox.png \
     qml/AnimatedEntity.qml \
+    qml/SceneView.qml \
     qml/main.qml \
     qu3e/CMakeLists.txt

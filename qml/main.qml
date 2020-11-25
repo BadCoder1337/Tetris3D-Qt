@@ -49,8 +49,10 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Scene3D 2.0
-import Qt3D.Render 2.15
+import QtQuick3D 1.15
+//import QtQuick3D.Materials 1.15
+//import QtQuick3D.Effects 1.15
+//import QtQuick3D.Helpers 1.15
 
 Item {
     Text {
@@ -66,14 +68,16 @@ Item {
     }
 
     Text {
-        text: "Multisample: " + scene3d.multisample
+        text: "Multisample: " + ["NoAA", "SSAA", "MSAA", "ProgressiveAA"][scene3d.environment.antialiasingMode]
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
 
         MouseArea {
             anchors.fill: parent
-            onClicked: scene3d.multisample = !scene3d.multisample
+            onClicked: scene3d.environment.antialiasingMode < 3
+                       ? scene3d.environment.antialiasingMode++
+                       : scene3d.environment.antialiasingMode = 0
         }
     }
 
@@ -82,6 +86,7 @@ Item {
         anchors.fill: parent
         anchors.margins: 50
         color: "darkRed"
+        objectName: "scene"
 
         transform: Rotation {
             id: sceneRotation
@@ -92,23 +97,15 @@ Item {
             origin.y: scene.height / 2
         }
 
-        Scene3D {
+        SceneView {
             id: scene3d
-            anchors.fill: parent
-            anchors.margins: 10
-            focus: true
-            aspects: ["input", "logic"]
-            cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
-
-            AnimatedEntity {
-                id: rootEntity
-            }
+            color: "skyblue"
         }
     }
 
     Rectangle {
         radius: 10
-        color: "#aaffffff"
+        color: "#44ffffff"
         border.width: 1
         border.color: "black"
         width: childrenRect.width + anchors.margins
@@ -121,7 +118,7 @@ Item {
             x: parent.anchors.margins / 2
             y: x
 
-            Text { text: "Vendor: " + rootEntity.capabilities.vendor }
+            Text { text: "Vendor: " + scene3d.environment. capabilities.vendor }
             Text { text: "Renderer: " + rootEntity.capabilities.renderer }
             Text { text: "Driver Version: " + rootEntity.capabilities.driverVersion }
             Text { text: "GL Version: " + rootEntity.capabilities.majorVersion + "." + rootEntity.capabilities.minorVersion }
