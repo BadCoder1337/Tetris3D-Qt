@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "./qu3e/q3.h"
+#include "./components/physengine.h"
 
 #include <QMainWindow>
 #include <QQuickItem>
@@ -19,7 +20,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    q3Scene *scenePhys;
+    PhysEngine *scenePhys;
     QQuickItem *scene3D;
     QFileSystemWatcher *fsWatcher;
 

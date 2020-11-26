@@ -3,6 +3,7 @@ QT       += core gui qml quick 3dinput widgets 3dextras quickwidgets
 CONFIG += c++11
 
 SOURCES += \
+    components/physengine.cpp \
     components/polycube.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
     qu3e/scene/q3Scene.cpp
 
 HEADERS += \
+    components/physengine.h \
     components/polycube.h \
     mainwindow.h \
     qu3e/broadphase/q3BroadPhase.h \

@@ -2,13 +2,16 @@
 #include "ui_mainwindow.h"
 
 #include "./qu3e/q3.h"
+#include "./components/physengine.h"
 
 #include <QTimer>
 #include <QQuickItem>
-#include <QQmlEngine>
 #include <QQuickPaintedItem>
 #include <QFileSystemWatcher>
 #include <QDir>
+
+#include <QQmlEngine>
+#include <QQmlContext>
 
 #define DEV true
 #define QML_DEV_PATH "../Tetris3D"
@@ -18,33 +21,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    scenePhys = new PhysEngine();
+//    qmlRegisterType<PhysEngine>("PhysEngine", 1, 0, "PhysEngine");
 
     loadQML();
-
-    scenePhys = new q3Scene(1.0f / 60.0f);
-
-    q3BodyDef bodyDef;
-    q3Body* body = scenePhys->CreateBody( bodyDef );
-    q3BoxDef boxDef;
-    boxDef.SetRestitution( 0 );
-    q3Transform tx;
-    q3Identity( tx );
-    tx.position.Set(0, -10, 0);
-    boxDef.Set( tx, q3Vec3( 50.0f, 1.0f, 50.0f ) );
-    body->AddBox( boxDef );
-
-    bodyDef.bodyType = eDynamicBody;
-    bodyDef.position.Set( 0.0f, 5.0f, 0.0f );
-    body = scenePhys->CreateBody( bodyDef );
-
-    tx.rotation.Set(q3Vec3(1.0f, 1.0f, 0.0f), -3.14f);
-
-    for ( int i = 0; i < 10; ++i )
-    {
-        tx.position.Set( q3RandomFloat( 1.0f, 10.0f ), q3RandomFloat( 1.0f, 10.0f ), q3RandomFloat( 1.0f, 10.0f ) );
-        boxDef.Set( tx, q3Vec3( 3.0f, 3.0f, 3.0f ) );
-        body->AddBox( boxDef );
-    }
 
     auto camera = scene3D->property("camera");
     auto cameraPosition = scene3D->property("cameraPosition").value<QVector3D>();
@@ -68,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::loadQML() {
     qDebug() << "loadQML";
     ui->quickWidget->engine()->clearComponentCache();
+    ui->quickWidget->engine()->rootContext()->setContextProperty("scenePhys", scenePhys);
     if (DEV) {
         ui->quickWidget->setSource(QUrl::fromLocalFile(QString(QML_DEV_PATH) + "/qml/main.qml"));
     } else {
