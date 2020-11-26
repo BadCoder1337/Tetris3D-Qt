@@ -115,7 +115,7 @@ public:
 
 	r32 GetMass( ) const;
 	r32 GetInvMass( ) const;
-private:
+
 	// m_flags
 	enum
 	{

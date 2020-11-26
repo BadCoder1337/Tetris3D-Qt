@@ -29,6 +29,8 @@
 
 #include "../common/q3Types.h"
 
+#include <QVector3D>
+
 r32 q3Abs( r32 a );
 r32 q3Min( r32 a, r32 b );
 r32 q3Max( r32 a, r32 b );
@@ -52,6 +54,8 @@ struct q3Vec3
 
 	q3Vec3( );
 	q3Vec3( r32 _x, r32 _y, r32 _z );
+
+    QVector3D toQVector3D();
 
 	void Set( r32 _x, r32 _y, r32 _z );
 	void SetAll( r32 a );

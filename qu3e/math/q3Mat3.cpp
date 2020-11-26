@@ -50,6 +50,17 @@ q3Mat3::q3Mat3( const q3Vec3& _x, const q3Vec3& _y, const q3Vec3& _z )
 {
 }
 
+QQuaternion q3Mat3::toQQuaternion() {
+    auto w = sqrt(1 + ex.x + ey.y + ez.z) * 0.5;
+    auto part = 0.5 - w*w;
+    return QQuaternion(
+        w,
+        sqrt(0.5 * ex.x + part),
+        sqrt(0.5 * ey.y + part),
+        sqrt(0.5 * ez.z + part)
+    ).normalized();
+}
+
 //--------------------------------------------------------------------------------------------------
 void q3Mat3::Set( r32 a, r32 b, r32 c, r32 d, r32 e, r32 f, r32 g, r32 h, r32 i )
 {

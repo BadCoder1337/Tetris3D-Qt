@@ -31,6 +31,8 @@
 #include "../common/q3Types.h"
 #include "q3Vec3.h"
 
+#include <QQuaternion>
+
 //--------------------------------------------------------------------------------------------------
 // q3Mat3
 //--------------------------------------------------------------------------------------------------
@@ -43,6 +45,8 @@ struct q3Mat3
 	q3Mat3( );
 	q3Mat3( r32 a, r32 b, r32 c, r32 d, r32 e, r32 f, r32 g, r32 h, r32 i );
 	q3Mat3( const q3Vec3& _x, const q3Vec3& _y, const q3Vec3& _z );
+
+    QQuaternion toQQuaternion();
 
 	void Set( r32 a, r32 b, r32 c, r32 d, r32 e, r32 f, r32 g, r32 h, r32 i );
 	void Set( const q3Vec3& axis, r32 angle );

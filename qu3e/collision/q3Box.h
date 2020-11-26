@@ -92,7 +92,6 @@ public:
 	void SetDensity( r32 density );
 	void SetSensor( bool sensor );
 
-private:
 	q3Transform m_tx;
 	q3Vec3 m_e;
 
