@@ -3,6 +3,7 @@
         <file>qml/AnimatedEntity.qml</file>
         <file>qml/main.qml</file>
         <file>qml/SceneView.qml</file>
-        <file>assets/skybox.png</file>
+        <file>assets/skybox.hdr</file>
+        <file>qml/DoubleSpinBox.qml</file>
     </qresource>
 </RCC>

@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <QQuickItem>
+#include <QFileSystemWatcher>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,9 +21,10 @@ public:
 
     q3Scene *scenePhys;
     QQuickItem *scene3D;
+    QFileSystemWatcher *fsWatcher;
 
-private slots:
-    void on_doubleSpinBox_10_valueChanged(double arg1);
+public slots:
+    void loadQML();
 
 private:
     Ui::MainWindow *ui;

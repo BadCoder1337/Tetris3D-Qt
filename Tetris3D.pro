@@ -3,10 +3,7 @@ QT       += core gui qml quick 3dinput widgets 3dextras quickwidgets
 CONFIG += c++11
 
 SOURCES += \
-    components/camera3d.cpp \
     components/polycube.cpp \
-    components/scenewidget.cpp \
-    components/transform3d.cpp \
     main.cpp \
     mainwindow.cpp \
     qu3e/broadphase/q3BroadPhase.cpp \
@@ -26,11 +23,7 @@ SOURCES += \
     qu3e/scene/q3Scene.cpp
 
 HEADERS += \
-    components/camera3d.h \
     components/polycube.h \
-    components/scenewidget.h \
-    components/transform3d.h \
-    components/vertex.h \
     mainwindow.h \
     qu3e/broadphase/q3BroadPhase.h \
     qu3e/broadphase/q3DynamicAABBTree.h \
@@ -67,7 +60,7 @@ FORMS += \
 RESOURCES += \
     resources.qrc
 
-LIBS += -lOpenGL32
+#LIBS += -lOpenGL32
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -75,8 +68,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    assets/skybox.png \
     qml/AnimatedEntity.qml \
     qml/SceneView.qml \
-    qml/main.qml \
-    qu3e/CMakeLists.txt
+    qml/main.qml
