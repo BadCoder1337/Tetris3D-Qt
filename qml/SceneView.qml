@@ -10,10 +10,6 @@ View3D {
     anchors.margins: 10
     focus: true
 
-    property string color: "skyblue"
-
-//    property type name: value
-
     property vector3d cameraPosition: Qt.vector3d(0, 400, 500)
     property vector3d cameraRotation: Qt.vector3d(-30, 0, 0)
     property real fov: 60;
@@ -66,10 +62,22 @@ View3D {
           eulerRotation: lightRotation
       }
 
+      Repeater3D {
+          model: scenePhys.getBoxes()
+          Model {
+              position: modelData.position
+              rotation: model.rotation
+              scale: Qt.vector3d(0.01, 0.01, 0.01)
+              source: "#Cube"
+
+              materials: [ DefaultMaterial { diffuseColor: modelData.color }]
+          }
+      }
+
       Model {
           position: light.position
           rotation: light.rotation
-          scale: Qt.vector3d(0.2, 0.2, 0.2)
+          scale: Qt.vector3d(0.01, 0.01, 0.01)
           source: "#Cube"
 
           materials: [ DefaultMaterial {
@@ -78,49 +86,32 @@ View3D {
           ]
       }
 
-      Model {
-          position: Qt.vector3d(0, -200, 0)
-          source: "#Cylinder"
-          scale: Qt.vector3d(2, 0.2, 1)
-          materials: [ DefaultMaterial {
-                  diffuseColor: "red"
-              }
-          ]
-      }
+//      Model {
+//          position: Qt.vector3d(0, 150, 0)
+//          source: "#Sphere"
 
-      Model {
-          position: Qt.vector3d(0, 150, 0)
-          source: "#Sphere"
 
-          materials: [ DefaultMaterial {
-                  diffuseColor: "blue"
-              }
-          ]
+//          materials: [ DefaultMaterial {
+//                  diffuseColor: "blue"
+//              }
+//          ]
 
-          SequentialAnimation on y {
-              loops: Animation.Infinite
-              NumberAnimation {
-                  duration: 3000
-                  to: -150
-                  from: 150
-                  easing.type:Easing.InQuad
-              }
-              NumberAnimation {
-                  duration: 3000
-                  to: 150
-                  from: -150
-                  easing.type:Easing.OutQuad
-              }
-          }
-      }
-
-      Model {
-          position: Qt.vector3d(0, 300, 0)
-          eulerRotation: Qt.vector3d(45, 0, 45)
-          source: "#Cube"
-
-          materials: [ DefaultMaterial { diffuseColor: "green" }]
-      }
+//          SequentialAnimation on y {
+//              loops: Animation.Infinite
+//              NumberAnimation {
+//                  duration: 3000
+//                  to: -150
+//                  from: 150
+//                  easing.type:Easing.InQuad
+//              }
+//              NumberAnimation {
+//                  duration: 3000
+//                  to: 150
+//                  from: -150
+//                  easing.type:Easing.OutQuad
+//              }
+//          }
+//      }
     }
 
 }

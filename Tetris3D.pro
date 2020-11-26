@@ -70,6 +70,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    qml/AnimatedEntity.qml \
     qml/SceneView.qml \
     qml/main.qml

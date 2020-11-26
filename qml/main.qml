@@ -20,7 +20,6 @@ Item {
 
         SceneView {
             id: scene3d
-            color: "skyblue"
         }
     }
 
@@ -53,7 +52,7 @@ Item {
                     onClicked: scene3d.environment.antialiasingMode < 3
                                ? scene3d.environment.antialiasingMode++
                                : scene3d.environment.antialiasingMode = 0
-                    onDoubleClicked: console.log(scenePhys.getGravity())
+                    onDoubleClicked: scenePhys.getBoxes()[0]
                 }
             }
 
