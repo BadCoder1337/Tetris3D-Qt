@@ -55,7 +55,7 @@ struct q3Vec3
 	q3Vec3( );
 	q3Vec3( r32 _x, r32 _y, r32 _z );
 
-    QVector3D toQVector3D();
+    const QVector3D toQVector3D() const;
 
 	void Set( r32 _x, r32 _y, r32 _z );
 	void SetAll( r32 a );

@@ -30,6 +30,8 @@
 #include "../common/q3Types.h"
 #include "q3Vec3.h"
 
+#include <QQuaternion>
+
 //--------------------------------------------------------------------------------------------------
 // q3Quaternion
 //--------------------------------------------------------------------------------------------------
@@ -55,6 +57,8 @@ public:
 	q3Quaternion( );
 	q3Quaternion( r32 a, r32 b, r32 c, r32 d );
 	q3Quaternion( const q3Vec3& axis, r32 radians );
+
+        const QQuaternion toQQuaternion() const;
 
 	void Set( const q3Vec3& axis, r32 radians );
 	void ToAxisAngle( q3Vec3* axis, r32* angle ) const;

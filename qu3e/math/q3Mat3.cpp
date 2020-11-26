@@ -50,7 +50,7 @@ q3Mat3::q3Mat3( const q3Vec3& _x, const q3Vec3& _y, const q3Vec3& _z )
 {
 }
 
-QQuaternion q3Mat3::toQQuaternion() {
+const QQuaternion q3Mat3::toQQuaternion() const {
     auto w = sqrt(1 + ex.x + ey.y + ez.z) * 0.5;
     auto part = 0.5 - w*w;
     return QQuaternion(

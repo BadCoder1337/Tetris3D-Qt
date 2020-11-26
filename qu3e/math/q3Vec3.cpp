@@ -42,7 +42,7 @@ q3Vec3::q3Vec3( r32 _x, r32 _y, r32 _z )
 {
 }
 
-QVector3D q3Vec3::toQVector3D() {
+const QVector3D q3Vec3::toQVector3D() const {
     return QVector3D(x, y, z);
 }
 
