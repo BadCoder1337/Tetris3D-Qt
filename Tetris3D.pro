@@ -24,6 +24,7 @@ SOURCES += \
     qu3e/scene/q3Scene.cpp
 
 HEADERS += \
+    components/boxdata.h \
     components/physengine.h \
     components/polycube.h \
     mainwindow.h \
