@@ -5,8 +5,6 @@
 #include "./components/physengine.h"
 
 #include <QMainWindow>
-#include <QQuickItem>
-#include <QFileSystemWatcher>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,12 +18,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    QTimer *timer;
+
     PhysEngine *scenePhys;
-    QQuickItem *scene3D;
-    QFileSystemWatcher *fsWatcher;
 
 public slots:
-    void loadQML();
+    void step();
 
 private:
     Ui::MainWindow *ui;

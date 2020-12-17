@@ -30,3 +30,33 @@ QVector3D PhysEngine::getGravity() {
     auto g = this->GetGravity();
     return QVector3D(g.x, g.y, g.z);
 }
+
+QVariantList PhysEngine::getBodies() {
+    auto body = m_bodyList;
+    QVariantList bodyList;
+    QVariantList boxList;
+    BodyData d_body;
+    BoxData d_box;
+    while (body) {
+       auto box = body->m_boxes;
+       d_body.position = body->m_tx.position.toQVector3D();
+       d_body.rotation = body->m_tx.rotation.toQQuaternion();
+       while (box) {
+           d_box.size = box->e.toQVector3D() * 2 * 0.01;
+           d_box.color = "red";
+           d_box.position = box->local.position.toQVector3D();
+           d_box.rotation = box->local.rotation.toQQuaternion();
+
+           boxList.append(QVariant::fromValue(d_box));
+           box = box->next;
+       }
+       d_body.boxes = boxList;
+       bodyList.append(QVariant::fromValue(d_body));
+       body = body->m_next;
+    }
+    auto v = m_bodyList->m_tx.rotation.toQQuaternion();
+    qDebug() << "getBoxes() LENGTH" << bodyList.length();
+    qDebug() << "getBoxes() RAW" << v;
+    // qDebug() << "getBoxes() RESULT" << static_cast<BodyData*>(bodyList.first().data())->position;
+    return bodyList;
+}

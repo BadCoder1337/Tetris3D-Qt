@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>qml/main.qml</file>
-        <file>qml/SceneView.qml</file>
-        <file>assets/skybox.hdr</file>
-    </qresource>
-</RCC>

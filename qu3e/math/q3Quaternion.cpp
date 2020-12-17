@@ -50,7 +50,7 @@ q3Quaternion::q3Quaternion( const q3Vec3& axis, r32 radians )
 	Set( axis, radians );
 }
 
-QQuaternion q3Quaternion::toQQuaternion() {
+const QQuaternion q3Quaternion::toQQuaternion() const {
     return QQuaternion(w, x, y, z);
 }
 

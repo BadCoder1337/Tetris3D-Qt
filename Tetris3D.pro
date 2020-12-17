@@ -1,10 +1,11 @@
-QT       += core gui qml quick 3dinput widgets 3dextras quickwidgets
+QT       += core gui widgets opengl
 
 CONFIG += c++11
 
 SOURCES += \
     components/physengine.cpp \
     components/polycube.cpp \
+    components/scenerenderer.cpp \
     main.cpp \
     mainwindow.cpp \
     qu3e/broadphase/q3BroadPhase.cpp \
@@ -24,9 +25,10 @@ SOURCES += \
     qu3e/scene/q3Scene.cpp
 
 HEADERS += \
-    components/boxdata.h \
     components/physengine.h \
     components/polycube.h \
+    components/scenedata.h \
+    components/scenerenderer.h \
     mainwindow.h \
     qu3e/broadphase/q3BroadPhase.h \
     qu3e/broadphase/q3DynamicAABBTree.h \
@@ -60,16 +62,11 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
-RESOURCES += \
-    resources.qrc
-
-#LIBS += -lOpenGL32
+LIBS += -lOpenGL32
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    qml/SceneView.qml \
-    qml/main.qml
+
