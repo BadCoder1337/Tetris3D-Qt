@@ -1,16 +1,26 @@
 #ifndef POLYCUBE_H
 #define POLYCUBE_H
 
+#include <QObject>
+#include <QColor>
 #include <QVector>
+#include <QVector3D>
+#include <QPair>
 
-class Polycube
+class Polycube : public QObject
 {
+    Q_OBJECT
 public:
-    Polycube();
+    explicit Polycube(QObject *parent = nullptr);
 
-private:
+    QVector<QVector3D> cubes;
+    QColor color;
 
-    QVector<QVector<int>> content;
+    Polycube& addCube(QVector3D v);
+    Polycube& setColor(QColor c);
+
+signals:
+
 };
 
 #endif // POLYCUBE_H
