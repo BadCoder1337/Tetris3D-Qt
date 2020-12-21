@@ -27,7 +27,6 @@ SOURCES += \
 HEADERS += \
     components/physengine.h \
     components/polycube.h \
-    components/scenedata.h \
     components/scenerenderer.h \
     mainwindow.h \
     qu3e/broadphase/q3BroadPhase.h \
@@ -62,7 +61,7 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
-LIBS += -lOpenGL32
+LIBS += -lOpenGL32 -lGlu32
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

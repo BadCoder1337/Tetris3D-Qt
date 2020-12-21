@@ -2,9 +2,23 @@
 #define SCENERENDERER_H
 
 #include "../qu3e/q3.h"
+#include "physengine.h"
 
 #include <QGLWidget>
 #include <QMouseEvent>
+
+struct Camera
+{
+    float position[ 3 ] = { 0.0f, 5.0f, -25.0f };
+    float target[ 3 ] = { 0.0f, -3.0f, 0.0f };
+};
+
+struct Light
+{
+    float ambient[ 4 ] = { 1.0f, 1.0f, 1.0f, 0.5f };
+    float diffuse[ 4 ] = { 0.2f, 0.4f, 0.7f, 1.0f };
+    float specular[ 4 ] = { 1.0f, 1.0f, 1.0f, 1.0f };
+};
 
 class SceneRenderer : public QGLWidget, public q3Render
 {
@@ -12,9 +26,7 @@ class SceneRenderer : public QGLWidget, public q3Render
 public:
     explicit SceneRenderer(QWidget *parent = 0);
     ~SceneRenderer();
-signals:
 
-public slots:
     void SetPenColor( f32 r, f32 g, f32 b, f32 a = 1.0f ) override;
     void SetPenPosition( f32 x, f32 y, f32 z ) override;
     void SetScale( f32 sx, f32 sy, f32 sz ) override;
@@ -35,37 +47,21 @@ public slots:
     // Draw a point with the scale from SetScale
     void Point( ) override;
 
+    Camera camera;
+    Light light;
+
+    PhysEngine *physEngine = nullptr;
+
 protected:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int width, int height) override;
 
-    QSize minimumSizeHint() const override;
-    QSize sizeHint() const override;
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-
-public slots:
-    // slots for xyz-rotation slider
-    void setXRotation(int angle);
-    void setYRotation(int angle);
-    void setZRotation(int angle);
-
-signals:
-    // signaling rotation from mouse movement
-    void xRotationChanged(int angle);
-    void yRotationChanged(int angle);
-    void zRotationChanged(int angle);
-
 private:
     void draw();
-
-    int xRot, yRot, zRot;
 
     f32 x_, y_, z_;
     f32 sx_, sy_, sz_;
     f32 nx_, ny_, nz_;
-
-    QPoint lastPos;
 };
 #endif // SCENERENDERER_H

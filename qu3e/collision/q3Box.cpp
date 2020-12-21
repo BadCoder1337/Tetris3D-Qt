@@ -196,6 +196,8 @@ void q3Box::Render( const q3Transform& tx, bool awake, q3Render* render ) const
 		q3Vec3(  e.x,  e.y,  e.z )
 	};
 
+    render->SetPenColor( color.x, color.y, color.z );
+
 	for ( i32 i = 0; i < 36; i += 3 )
 	{
 		q3Vec3 a = q3Mul( world, vertices[ kBoxIndices[ i ] ] );
@@ -203,12 +205,6 @@ void q3Box::Render( const q3Transform& tx, bool awake, q3Render* render ) const
 		q3Vec3 c = q3Mul( world, vertices[ kBoxIndices[ i + 2 ] ] );
 
 		q3Vec3 n = q3Normalize( q3Cross( b - a, c - a ) );
-
-		//render->SetPenColor( 0.2f, 0.4f, 0.7f, 0.5f );
-		//render->SetPenPosition( a.x, a.y, a.z );
-		//render->Line( b.x, b.y, b.z );
-		//render->Line( c.x, c.y, c.z );
-		//render->Line( a.x, a.y, a.z );
 
 		render->SetTriNormal( n.x, n.y, n.z );
 		render->Triangle( a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z );

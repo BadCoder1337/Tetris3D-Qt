@@ -56,8 +56,10 @@ struct q3Box
 	r32 restitution;
 	r32 density;
 	i32 broadPhaseIndex;
-	mutable void* userData;
-	mutable bool sensor;
+    mutable void* userData;
+    mutable bool sensor;
+
+    q3Vec3 color;
 
 	void SetUserdata( void* data ) const;
 	void* GetUserdata( ) const;
@@ -82,7 +84,8 @@ public:
 		m_friction = r32( 0.4 );
 		m_restitution = r32( 0.2 );
 		m_density = r32( 1.0 );
-		m_sensor = false;
+        m_sensor = false;
+        m_color = q3Vec3(1, 0, 0);
 	}
 
 	void Set( const q3Transform& tx, const q3Vec3& extents );
@@ -91,14 +94,16 @@ public:
 	void SetRestitution( r32 restitution );
 	void SetDensity( r32 density );
 	void SetSensor( bool sensor );
+    void SetColor( QColor color );
 
 	q3Transform m_tx;
 	q3Vec3 m_e;
+    q3Vec3 m_color;
 
 	r32 m_friction;
 	r32 m_restitution;
 	r32 m_density;
-	bool m_sensor;
+    bool m_sensor;
 
 	friend class q3Body;
 };

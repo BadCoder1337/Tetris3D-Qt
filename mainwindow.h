@@ -5,6 +5,7 @@
 #include "./components/physengine.h"
 
 #include <QMainWindow>
+#include <QFile>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,14 +19,26 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    QTimer *stepTimer;
     QTimer *timer;
 
-    PhysEngine *scenePhys;
+    PhysEngine *engine = nullptr;
+
+    void initEngine();
 
 public slots:
     void step();
+    void addObject();
+
+private slots:
+    void on_actionOpen_triggered();
+    void on_actionQuit_triggered();
+    void on_actionClear_triggered();
 
 private:
     Ui::MainWindow *ui;
+
+    QFile f_pcubes;
+    int fileStreamPos = 0;
 };
 #endif // MAINWINDOW_H
