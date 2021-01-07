@@ -29,6 +29,9 @@ void SceneRenderer::SetScale(f32 sx, f32 sy, f32 sz)
 
 void SceneRenderer::Line(f32 x, f32 y, f32 z)
 {
+    Q3_UNUSED( x );
+    Q3_UNUSED( y );
+    Q3_UNUSED( z );
 //    glBegin( GL_LINES );
 //    glVertex3f( (float)x_, (float)y_, (float)z_ );
 //    glVertex3f( (float)x, (float)y, (float)z );
@@ -93,7 +96,7 @@ void SceneRenderer::resizeGL(int width, int height)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective( 45.0f, aspectRatio, 0.1f, 10000.0f );
+    gluPerspective( 90.0f, aspectRatio, 0.1f, 10000.0f );
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

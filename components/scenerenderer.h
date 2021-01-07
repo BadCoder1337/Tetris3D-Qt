@@ -10,7 +10,7 @@
 struct Camera
 {
     float position[ 3 ] = { 0.0f, 5.0f, -25.0f };
-    float target[ 3 ] = { 0.0f, -3.0f, 0.0f };
+    float target[ 3 ] = { 0.0f, 5.0f, 0.0f };
 };
 
 struct Light
