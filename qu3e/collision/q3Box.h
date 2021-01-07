@@ -32,6 +32,8 @@
 #include "../math/q3Transform.h"
 #include "../debug/q3Render.h"
 
+#include <QColor>
+
 //--------------------------------------------------------------------------------------------------
 // q3MassData
 //--------------------------------------------------------------------------------------------------
@@ -59,7 +61,7 @@ struct q3Box
     mutable void* userData;
     mutable bool sensor;
 
-    q3Vec3 color;
+    QColor color;
 
 	void SetUserdata( void* data ) const;
 	void* GetUserdata( ) const;
@@ -85,7 +87,7 @@ public:
 		m_restitution = r32( 0.2 );
 		m_density = r32( 1.0 );
         m_sensor = false;
-        m_color = q3Vec3(1, 0, 0);
+        m_color = Qt::red;
 	}
 
 	void Set( const q3Transform& tx, const q3Vec3& extents );
@@ -98,7 +100,7 @@ public:
 
 	q3Transform m_tx;
 	q3Vec3 m_e;
-    q3Vec3 m_color;
+    QColor m_color;
 
 	r32 m_friction;
 	r32 m_restitution;

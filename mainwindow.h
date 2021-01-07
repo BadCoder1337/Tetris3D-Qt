@@ -20,15 +20,20 @@ public:
     ~MainWindow();
 
     QTimer *stepTimer;
-    QTimer *timer;
+    QTimer *queryTimer;
+    QTimer *shapeTimer;
 
     PhysEngine *engine = nullptr;
 
     void initEngine();
 
+protected:
+    void keyPressEvent(QKeyEvent *event);
+
 public slots:
     void step();
     void addObject();
+    void checkLayer();
 
 private slots:
     void on_actionOpen_triggered();

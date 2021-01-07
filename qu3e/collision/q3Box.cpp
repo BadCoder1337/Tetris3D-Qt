@@ -183,6 +183,9 @@ const i32 kBoxIndices[ 36 ] = {
 //--------------------------------------------------------------------------------------------------
 void q3Box::Render( const q3Transform& tx, bool awake, q3Render* render ) const
 {
+
+    if (color.alphaF() == 0) return;
+
 	q3Transform world = q3Mul( tx, local );
 
 	q3Vec3 vertices[ 8 ] = {
@@ -196,7 +199,7 @@ void q3Box::Render( const q3Transform& tx, bool awake, q3Render* render ) const
 		q3Vec3(  e.x,  e.y,  e.z )
 	};
 
-    render->SetPenColor( color.x, color.y, color.z );
+    render->SetPenColor( color.redF(), color.greenF(), color.blueF(), color.alphaF() );
 
 	for ( i32 i = 0; i < 36; i += 3 )
 	{

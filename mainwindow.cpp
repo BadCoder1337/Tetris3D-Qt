@@ -24,9 +24,14 @@ MainWindow::MainWindow(QWidget *parent)
     stepTimer->setInterval(1000 / 60);
     stepTimer->start();
 
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(addObject()));
-    timer->setInterval(2000);
+    queryTimer = new QTimer(this);
+    connect(queryTimer, SIGNAL(timeout()), this, SLOT(checkLayer()));
+    queryTimer->setInterval(3000);
+    queryTimer->start();
+
+    shapeTimer = new QTimer(this);
+    connect(shapeTimer, SIGNAL(timeout()), this, SLOT(addObject()));
+    shapeTimer->setInterval(2000);
 }
 
 MainWindow::~MainWindow()
@@ -46,6 +51,18 @@ void MainWindow::initEngine()
 
     engine = new PhysEngine();
     ui->sceneRenderer->physEngine = engine;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if (engine->activeBody == nullptr) return;
+    int impulse = 50;
+    switch (event->key()) {
+        case Qt::Key_Left: engine->applyImpulse(q3Vec3(impulse, 0, 0));
+        case Qt::Key_Right: engine->applyImpulse(q3Vec3(-impulse, 0, 0));
+        case Qt::Key_Up: engine->applyImpulse(q3Vec3(0, 0, impulse));
+        case Qt::Key_Down: engine->applyImpulse(q3Vec3(0, 0, -impulse));
+    }
 }
 
 void MainWindow::step()
@@ -83,10 +100,27 @@ void MainWindow::addObject()
     engine->addPolycube(pos, shape);
 
     if (in.atEnd()) {
-        timer->stop();
+        shapeTimer->stop();
         f_pcubes.close();
         fileStreamPos = 0;
     }
+}
+
+void MainWindow::checkLayer()
+{
+    qDebug() << "Start query";
+
+    q3AABB area;
+    area.min = q3Vec3(-25, -9, -25);
+    area.max = q3Vec3(25, -8.75f, 25);
+    engine->QueryAABB(engine, area);
+
+    qDebug() << "Vector" << engine->lowestBoxes.size();
+    if (engine->lowestBoxes.size() > 5) {
+        engine->clearLayer();
+    }
+    engine->lowestBoxes.clear();
+    qDebug() << "Done";
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -98,7 +132,7 @@ void MainWindow::on_actionOpen_triggered()
     {
         f_pcubes.setFileName(fileName);
         f_pcubes.open(QIODevice::ReadOnly);
-        timer->start();
+        shapeTimer->start();
      }
 }
 

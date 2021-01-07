@@ -72,5 +72,5 @@ inline void q3BoxDef::SetSensor( bool sensor )
 //--------------------------------------------------------------------------------------------------
 inline void q3BoxDef::SetColor( QColor color )
 {
-    m_color = q3Vec3(color.redF(), color.greenF(), color.blueF());
+    m_color = color;
 }
