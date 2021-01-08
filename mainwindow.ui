@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>500</width>
+    <height>750</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,7 +44,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>500</width>
      <height>21</height>
     </rect>
    </property>
@@ -52,7 +52,6 @@
     <property name="title">
      <string>Файл</string>
     </property>
-    <addaction name="actionOpen"/>
     <addaction name="actionClear"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -60,11 +59,6 @@
    <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionOpen">
-   <property name="text">
-    <string>Открыть</string>
-   </property>
-  </action>
   <action name="actionClear">
    <property name="text">
     <string>Очистить</string>

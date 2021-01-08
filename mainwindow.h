@@ -23,6 +23,8 @@ public:
     QTimer *queryTimer;
     QTimer *shapeTimer;
 
+    int score = 0;
+
     PhysEngine *engine = nullptr;
 
     void initEngine();
@@ -32,11 +34,12 @@ protected:
 
 public slots:
     void step();
-    void addObject();
+//    void addObject();
+    void addRandomObject();
     void checkLayer();
 
 private slots:
-    void on_actionOpen_triggered();
+//    void on_actionOpen_triggered();
     void on_actionQuit_triggered();
     void on_actionClear_triggered();
 
